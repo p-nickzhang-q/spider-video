@@ -1,14 +1,19 @@
 /* 批量下载主程序 */
 const fs = require('fs'),
-      config = require('./cofig'),
-      method = require('./method')
+  config = require('./cofig'),
+  method = require('./method')
 
 // 初始化方法
 const start = async () => {
   method.mkdirSaveFolder(config.savePath)
-  let toutiaoName = '维辰财经'
-  let offset = 0 // offset: 0：第一页数据，20：第二页数据，依次类推
-  let pageUrlList = await method.getVideoPageList(toutiaoName, offset)
+  let toutiaoName = '航空航天';
+  // let offset = 0 // offset: 0：第一页数据，20：第二页数据，依次类推
+  let pageTotal = 47;
+  let pageUrlList = [];
+  for (let pageNo = 1; pageNo <= pageTotal; pageNo++) {
+    pageUrlList = pageUrlList.concat(await method.getVideoPageList(toutiaoName, pageNo));
+    console.log(`已获得url${pageUrlList.length}个`);
+  }
   main(pageUrlList)
 }
 
